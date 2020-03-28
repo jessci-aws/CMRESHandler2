@@ -43,6 +43,7 @@ class CMRESHandler(logging.Handler):
         BASIC_AUTH = 1
         KERBEROS_AUTH = 2
         AWS_SIGNED_AUTH = 3
+        AWS_SIGNED_AUTH = 4
 
     class IndexNameFrequency(Enum):
         """ Index type supported
@@ -127,6 +128,7 @@ class CMRESHandler(logging.Handler):
                  auth_details=(__DEFAULT_AUTH_USER, __DEFAULT_AUTH_PASSWD),
                  aws_access_key=__DEFAULT_AWS_ACCESS_KEY,
                  aws_secret_key=__DEFAULT_AWS_SECRET_KEY,
+                 aws_session_token=None,
                  aws_region=__DEFAULT_AWS_REGION,
                  auth_type=__DEFAULT_AUTH_TYPE,
                  use_ssl=__DEFAULT_USE_SSL,
@@ -243,7 +245,7 @@ class CMRESHandler(logging.Handler):
             if not AWS4AUTH_SUPPORTED:
                 raise EnvironmentError("AWS4Auth not available. Please install \"requests-aws4auth\"")
             if self._client is None:
-                awsauth = AWS4Auth(self.aws_access_key, self.aws_secret_key, self.aws_region, 'es')
+                awsauth = AWS4Auth(self.aws_access_key, self.aws_secret_key, self.aws_region, 'es', session_token=self.aws_session_token)
                 self._client = Elasticsearch(
                     hosts=self.hosts,
                     http_auth=awsauth,
