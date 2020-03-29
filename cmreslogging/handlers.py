@@ -43,7 +43,6 @@ class CMRESHandler(logging.Handler):
         BASIC_AUTH = 1
         KERBEROS_AUTH = 2
         AWS_SIGNED_AUTH = 3
-        AWS_SIGNED_AUTH = 4
 
     class IndexNameFrequency(Enum):
         """ Index type supported
@@ -64,6 +63,7 @@ class CMRESHandler(logging.Handler):
     __DEFAULT_AUTH_PASSWD = ''
     __DEFAULT_AWS_ACCESS_KEY = ''
     __DEFAULT_AWS_SECRET_KEY = ''
+    __DEFAULT_AWS_SESSION_TOKEN = ''
     __DEFAULT_AWS_REGION = ''
     __DEFAULT_USE_SSL = False
     __DEFAULT_VERIFY_SSL = True
@@ -128,7 +128,7 @@ class CMRESHandler(logging.Handler):
                  auth_details=(__DEFAULT_AUTH_USER, __DEFAULT_AUTH_PASSWD),
                  aws_access_key=__DEFAULT_AWS_ACCESS_KEY,
                  aws_secret_key=__DEFAULT_AWS_SECRET_KEY,
-                 aws_session_token=None,
+                 aws_session_token=__DEFAULT_AWS_SESSION_TOKEN,
                  aws_region=__DEFAULT_AWS_REGION,
                  auth_type=__DEFAULT_AUTH_TYPE,
                  use_ssl=__DEFAULT_USE_SSL,
@@ -153,6 +153,10 @@ class CMRESHandler(logging.Handler):
                     the AWS key id of the  the AWS IAM user
         :param aws_secret_key: When ```CMRESHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must contain
                     the AWS secret key of the  the AWS IAM user
+        :param aws_session_token: When ```CMRESHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument may contain
+                    the AWS session token of the  the AWS IAM identity
+                    See here for more details: 
+                    https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-request-signing.html#es-request-signing-python
         :param aws_region: When ```CMRESHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must contain
                     the AWS region of the  the AWS Elasticsearch servers, for example```'us-east'
         :param auth_type: The authentication type to be used in the connection ```CMRESHandler.AuthType```
@@ -182,6 +186,7 @@ class CMRESHandler(logging.Handler):
         self.auth_details = auth_details
         self.aws_access_key = aws_access_key
         self.aws_secret_key = aws_secret_key
+        self.aws_session_token = aws_session_token
         self.aws_region = aws_region
         self.auth_type = auth_type
         self.use_ssl = use_ssl
@@ -245,7 +250,7 @@ class CMRESHandler(logging.Handler):
             if not AWS4AUTH_SUPPORTED:
                 raise EnvironmentError("AWS4Auth not available. Please install \"requests-aws4auth\"")
             if self._client is None:
-                awsauth = AWS4Auth(self.aws_access_key, self.aws_secret_key, self.aws_region, 'es', session_token=self.aws_session_token)
+                awsauth = AWS4Auth(self.aws_access_key, self.aws_secret_key, self.aws_region, 'es', self.aws_session_token)
                 self._client = Elasticsearch(
                     hosts=self.hosts,
                     http_auth=awsauth,
