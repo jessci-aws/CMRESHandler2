@@ -8,7 +8,7 @@ CMRESHandler.py
 
 
 Python Elasticsearch Log handler 2
-********************************
+**********************************
 
 This library provides an Elasticsearch logging appender compatible with the
 python standard `logging <https://docs.python.org/2/library/logging.html>`_ library.
