@@ -4,7 +4,7 @@ CMRESHandler.py
 ===============
 
 |  |license| |versions| |status| |downloads|
-|  |ci_status| |codecov| |gitter|
+
 
 
 Python Elasticsearch Log handler 2
