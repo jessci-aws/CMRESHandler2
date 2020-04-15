@@ -59,7 +59,6 @@ setup(
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: System :: Logging',
-        'Topic :: System :: Elasticsearch',
         'Topic :: Software Development :: Libraries',
         'Topic :: Internet :: Log Analysis',
 
