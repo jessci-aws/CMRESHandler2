@@ -29,22 +29,22 @@ if sys.version_info <= (3,4):
 print("List of dependencies : {0}".format(str(dependencies)))
 
 setup(
-    name='CMRESHandler',
+    name='CMRESHandler2',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.0',
+    version='2.0.1',
 
-    description='Elasticsearch Log handler for the logging library',
+    description='forked Elasticsearch Log handler for the logging library that includes session token support',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/cmanaha/python-elasticsearch-logger',
+    url='https://github.com/drumadrian/python-elasticsearch-logger',
 
     # Author details
-    author='Carlos Manzanedo Rueda',
-    author_email='c.manaha@gmail.com',
+    author='Adrian Drummond',
+    author_email='adrian.drummond@gmail.com',
 
     # Choose your license
     license='Apache2',
@@ -59,6 +59,7 @@ setup(
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: System :: Logging',
+        'Topic :: System :: Elasticsearch',
         'Topic :: Software Development :: Libraries',
         'Topic :: Internet :: Log Analysis',
 

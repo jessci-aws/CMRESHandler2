@@ -7,21 +7,21 @@ CMRESHandler.py
 |  |ci_status| |codecov| |gitter|
 
 
-Python Elasticsearch Log handler
+Python Elasticsearch Log handler 2
 ********************************
 
 This library provides an Elasticsearch logging appender compatible with the
 python standard `logging <https://docs.python.org/2/library/logging.html>`_ library.
 
-The code source is in github at `https://github.com/cmanaha/python-elasticsearch-logger
-<https://github.com/cmanaha/python-elasticsearch-logger>`_
+The code source is in github at `https://github.com/drumadrian/python-elasticsearch-logger
+<https://github.com/drumadrian/python-elasticsearch-logger>`_
 
 
 Installation
 ============
 Install using pip::
 
-    pip install CMRESHandler
+    pip install CMRESHandler2
 
 Requirements Python 2
 =====================
@@ -101,6 +101,7 @@ The constructors takes the following parameters:
  - auth_details: When CMRESHandler.AuthType.BASIC_AUTH is used this argument must contain a tuple of string with the user and password that will be used to authenticate against the Elasticsearch servers, for example ('User','Password')
  - aws_access_key: When ``CMRESHandler.AuthType.AWS_SIGNED_AUTH`` is used this argument must contain the AWS key id of the  the AWS IAM user
  - aws_secret_key: When ``CMRESHandler.AuthType.AWS_SIGNED_AUTH`` is used this argument must contain the AWS secret key of the  the AWS IAM user
+ - aws_session_token: When ``CMRESHandler.AuthType.AWS_SIGNED_AUTH`` is used this argument must contain the AWS session token of the  the AWS IAM user
  - aws_region: When ``CMRESHandler.AuthType.AWS_SIGNED_AUTH`` is used this argument must contain the AWS region of the  the AWS Elasticsearch servers, for example ``'us-east'``
  - use_ssl: A boolean that defines if the communications should use SSL encrypted communication
  - verify_ssl: A boolean that defines if the SSL certificates are validated or not
@@ -179,24 +180,15 @@ Contributing back
 Feel free to use this as is or even better, feel free to fork and send your pull requests over.
 
 
-.. |downloads| image:: https://img.shields.io/pypi/dd/CMRESHandler.svg
-    :target: https://pypi.python.org/pypi/CMRESHandler
+.. |downloads| image:: https://img.shields.io/pypi/dd/CMRESHandler2.svg
+    :target: https://pypi.python.org/pypi/CMRESHandler2
     :alt: Daily PyPI downloads
-.. |versions| image:: https://img.shields.io/pypi/pyversions/CMRESHandler.svg
-    :target: https://pypi.python.org/pypi/CMRESHandler
+.. |versions| image:: https://img.shields.io/pypi/pyversions/CMRESHandler2.svg
+    :target: https://pypi.python.org/pypi/CMRESHandler2
     :alt: Python versions supported
-.. |status| image:: https://img.shields.io/pypi/status/CMRESHandler.svg
-    :target: https://pypi.python.org/pypi/CMRESHandler
+.. |status| image:: https://img.shields.io/pypi/status/CMRESHandler2.svg
+    :target: https://pypi.python.org/pypi/CMRESHandler2
     :alt: Package stability
-.. |license| image:: https://img.shields.io/pypi/l/CMRESHandler.svg
-    :target: https://pypi.python.org/pypi/CMRESHandler
+.. |license| image:: https://img.shields.io/pypi/l/CMRESHandler2.svg
+    :target: https://pypi.python.org/pypi/CMRESHandler2
     :alt: License
-.. |ci_status| image:: https://travis-ci.org/cmanaha/python-elasticsearch-logger.svg?branch=master
-    :target: https://travis-ci.org/cmanaha/python-elasticsearch-logger
-    :alt: Continuous Integration Status
-.. |codecov| image:: https://codecov.io/github/cmanaha/python-elasticsearch-logger/coverage.svg?branch=master
-    :target: http://codecov.io/github/cmanaha/python-elasticsearch-logger?branch=master
-    :alt: Coverage!
-.. |gitter| image:: https://badges.gitter.im/Join%20Chat.svg
-    :target: https://gitter.im/cmanaha/python-elasticsearch-logger?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
-    :alt: gitter

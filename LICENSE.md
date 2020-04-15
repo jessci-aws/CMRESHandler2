@@ -1,4 +1,4 @@
-Copyright 2016 Carlos Manzanedo Rueda
+Copyright 2020 Adrian Galego Drummond
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
