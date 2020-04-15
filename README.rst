@@ -16,6 +16,16 @@ python standard `logging <https://docs.python.org/2/library/logging.html>`_ libr
 The code source is in github at `https://github.com/drumadrian/python-elasticsearch-logger
 <https://github.com/drumadrian/python-elasticsearch-logger>`_
 
+This library is a fork from `https://github.com/cmanaha/python-elasticsearch-logger
+<https://github.com/cmanaha/python-elasticsearch-logger>`_
+
+The fork was intened to add a session token for usage in AWS with non permanent credentials. 
+
+The AWS Security Token Service (STS) is a web service that enables you to request temporary, limited-privilege
+credentials for AWS Identity and Access Management (IAM) users or for users that you 
+authenticate (federated users). 
+
+
 
 Installation
 ============
