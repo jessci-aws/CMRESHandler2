@@ -76,3 +76,4 @@ target/
 # pyenv
 .python-version
 .DS_Store
+.vscode/settings.json
