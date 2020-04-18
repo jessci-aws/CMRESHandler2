@@ -38,7 +38,6 @@ setup(
 
     description='forked Elasticsearch Log handler for the logging library that includes session token support',
     long_description=long_description,
-
     long_description_content_type='text/x-rst',
 
     # The project's main homepage.
