@@ -77,3 +77,4 @@ target/
 .python-version
 .DS_Store
 .vscode/settings.json
+python-elasticsearch-logger.code-workspace
