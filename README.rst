@@ -61,6 +61,7 @@ Using the handler in  your program
 ==================================
 To initialise and create the handler, just add the handler to your logger as follow ::
 
+    import logging
     from cmreslogging.handlers import CMRESHandler
     handler = CMRESHandler(hosts=[{'host': 'localhost', 'port': 9200}],
                                auth_type=CMRESHandler.AuthType.NO_AUTH,
@@ -71,6 +72,7 @@ To initialise and create the handler, just add the handler to your logger as fol
 
 You can add fields upon initialisation, providing more data of the execution context ::
 
+    import logging
     from cmreslogging.handlers import CMRESHandler
     handler = CMRESHandler(hosts=[{'host': 'localhost', 'port': 9200}],
                                auth_type=CMRESHandler.AuthType.NO_AUTH,
@@ -125,6 +127,24 @@ The constructors takes the following parameters:
    is used
  - es_doc_type: A string with the name of the document type that will be used ``python_log`` used by default
  - es_additional_fields: A dictionary with all the additional fields that you would like to add to the logs
+
+
+Using the handler in  your program with AWS Credentials
+==================================
+To initialise and create the handler, just add the handler to your logger as follow ::
+
+    import logging
+    from cmreslogging.handlers import CMRESHandler
+    handler = CMRESHandler(hosts=[{'host': 'search-serverl-elasti-krvvhs1lejpx-nq56g4vhirhbcjq5tticudbpfi.us-west-2.es.amazonaws.com', 'port': 443}],
+                                auth_type=CMRESHandler.AuthType.AWS_SIGNED_AUTH,
+                                aws_access_key=AWS_ACCESS_KEY_ID,
+                                aws_secret_key=AWS_SECRET_ACCESS_KEY,
+                                aws_session_token=AWS_SESSION_TOKEN,
+                                aws_region=AWS_REGION,
+                                use_ssl=True,
+                                verify_ssl=True,
+                                es_index_name="my_python_index")
+    
 
 Django Integration
 ==================
