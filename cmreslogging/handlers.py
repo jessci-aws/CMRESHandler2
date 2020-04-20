@@ -251,6 +251,7 @@ class CMRESHandler(logging.Handler):
                 raise EnvironmentError("AWS4Auth not available. Please install \"requests-aws4auth\"")
             if self._client is None:
                 awsauth = AWS4Auth(self.aws_access_key, self.aws_secret_key, self.aws_region, 'es', session_token=self.aws_session_token)
+                print('Thank you for using Adrian\' Python Elasticsearch Logger')
                 self._client = Elasticsearch(
                     hosts=self.hosts,
                     http_auth=awsauth,

@@ -132,19 +132,41 @@ The constructors takes the following parameters:
 Using the handler in  your program with AWS Credentials
 ==================================
 To initialise and create the handler, just add the handler to your logger as follow ::
-
-    import logging
+        
     from cmreslogging.handlers import CMRESHandler
-    handler = CMRESHandler(hosts=[{'host': 'search-serverl-elasti-krvvhs1lejpx-nq56g4vhirhbcjq5tticudbpfi.us-west-2.es.amazonaws.com', 'port': 443}],
-                                auth_type=CMRESHandler.AuthType.AWS_SIGNED_AUTH,
-                                aws_access_key=AWS_ACCESS_KEY_ID,
-                                aws_secret_key=AWS_SECRET_ACCESS_KEY,
-                                aws_session_token=AWS_SESSION_TOKEN,
-                                aws_region=AWS_REGION,
-                                use_ssl=True,
-                                verify_ssl=True,
-                                es_index_name="my_python_index")
-    
+    import logging
+    import os
+    import sys
+
+    AWS_ACCESS_KEY_ID=os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY=os.environ['AWS_SECRET_ACCESS_KEY']
+    AWS_SESSION_TOKEN=os.environ['AWS_SESSION_TOKEN']
+    AWS_REGION='us-west-2'
+    HOSTS=[{'host': 'search-serverl-elasti-krvvhs1lejpx-nq56g4vhirhbcjq8tticudbpfi.us-west-2.es.amazonaws.com', 'port': 443}]
+
+    handler = CMRESHandler( hosts=HOSTS,
+                            auth_type=CMRESHandler.AuthType.AWS_SIGNED_AUTH,
+                            aws_access_key=AWS_ACCESS_KEY_ID,
+                            aws_secret_key=AWS_SECRET_ACCESS_KEY,
+                            aws_session_token=AWS_SESSION_TOKEN,
+                            aws_region=AWS_REGION,
+                            use_ssl=True,
+                            verify_ssl=True,
+                            es_additional_fields={'App': 'TestApp', 'Environment': 'Dev'},
+                            es_index_name="python_logger")
+
+    log = logging.getLogger("PythonTest")
+    log.setLevel(logging.INFO)
+    log.addHandler(handler)
+
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+    print("hello world")
+    log.debug("hello stdout world")
+    log.info("hello AWS world")
+
+
+
 
 Django Integration
 ==================
@@ -203,6 +225,14 @@ approach, I'd suggest reading `this conversation thread <https://github.com/cman
 The same functionality can be implemented in many other different ways. For example, consider the integration
 using `SysLogHandler <https://docs.python.org/3/library/logging.handlers.html#sysloghandler>`_ and
 `logstash syslog plugin <https://www.elastic.co/guide/en/logstash/current/plugins-inputs-syslog.html>`_.
+
+
+Kibana Screenshot
+-----------------
+
+.. image:: kibana.png
+  :width: 400
+  :alt: Kibana screenshot
 
 
 Contributing back
