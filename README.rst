@@ -130,7 +130,7 @@ The constructors takes the following parameters:
 
 
 Using the handler in  your program with AWS Credentials
-==================================
+=======================================================
 To initialise and create the handler, just add the handler to your logger as follow ::
         
     from cmreslogging.handlers import CMRESHandler
