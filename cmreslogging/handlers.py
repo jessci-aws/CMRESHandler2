@@ -38,11 +38,14 @@ class CMRESHandler(logging.Handler):
          - No authentication
          - Basic authentication
          - Kerberos or SSO authentication (on windows and linux)
+         - AWS Signed Authentication (static credentials)
+         - AWS Signed Authentication (Refreshable Credentials via botocore.credentials.RefreshableCredentials)
         """
         NO_AUTH = 0
         BASIC_AUTH = 1
         KERBEROS_AUTH = 2
         AWS_SIGNED_AUTH = 3
+        AWS_REFRESHABLE_CREDENTIALS = 4
 
     class IndexNameFrequency(Enum):
         """ Index type supported
@@ -65,6 +68,7 @@ class CMRESHandler(logging.Handler):
     __DEFAULT_AWS_SECRET_KEY = ''
     __DEFAULT_AWS_SESSION_TOKEN = ''
     __DEFAULT_AWS_REGION = ''
+    __DEFAULT_AWS_REFRESHABLE_CREDENTIALS = None
     __DEFAULT_USE_SSL = False
     __DEFAULT_VERIFY_SSL = True
     __DEFAULT_AUTH_TYPE = AuthType.NO_AUTH
@@ -129,6 +133,7 @@ class CMRESHandler(logging.Handler):
                  aws_access_key=__DEFAULT_AWS_ACCESS_KEY,
                  aws_secret_key=__DEFAULT_AWS_SECRET_KEY,
                  aws_session_token=__DEFAULT_AWS_SESSION_TOKEN,
+                 aws_refreshable_credentials=__DEFAULT_AWS_REFRESHABLE_CREDENTIALS,
                  aws_region=__DEFAULT_AWS_REGION,
                  auth_type=__DEFAULT_AUTH_TYPE,
                  use_ssl=__DEFAULT_USE_SSL,
@@ -157,10 +162,12 @@ class CMRESHandler(logging.Handler):
                     the AWS session token of the  the AWS IAM identity
                     See here for more details: 
                     https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-request-signing.html#es-request-signing-python
-        :param aws_region: When ```CMRESHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must contain
-                    the AWS region of the  the AWS Elasticsearch servers, for example```'us-east'
+        :param aws_refreshable_credentials: When ```CMRESHandler.AuthType.AWS_Refreshable_Credentials``` is used this argument must contain
+                    and object containing credentials that is compatible with expected methods on Botocore.credentials.RefreshableCredentials
+        :param aws_region: When ```CMRESHandler.AuthType.AWS_SIGNED_AUTH``` OR ```CMRESHandler.AuthType.AWS_Refreshable_Credentials```
+                    is used this argument must contain the AWS region of the AWS Elasticsearch servers, for example```'us-east'
         :param auth_type: The authentication type to be used in the connection ```CMRESHandler.AuthType```
-                    Currently, NO_AUTH, BASIC_AUTH, KERBEROS_AUTH are supported
+                    Currently, NO_AUTH, BASIC_AUTH, KERBEROS_AUTH, AWS_SIGNED_AUTH, and AWS_REFRESHABLE_CREDENTIALS are supported
         :param use_ssl: A boolean that defines if the communications should use SSL encrypted communication
         :param verify_ssl: A boolean that defines if the SSL certificates are validated or not
         :param buffer_size: An int, Once this size is reached on the internal buffer results are flushed into ES
@@ -187,6 +194,7 @@ class CMRESHandler(logging.Handler):
         self.aws_access_key = aws_access_key
         self.aws_secret_key = aws_secret_key
         self.aws_session_token = aws_session_token
+        self.aws_refreshable_credentials = aws_refreshable_credentials
         self.aws_region = aws_region
         self.auth_type = auth_type
         self.use_ssl = use_ssl
@@ -269,6 +277,20 @@ class CMRESHandler(logging.Handler):
                     serializer=self.serializer
                 )
             return self._client
+
+        if self.auth_type == CMRESHandler.AuthType.AWS_REFRESHABLE_CREDENTIALS:
+            if not AWS4AUTH_SUPPORTED:
+                raise EnvironmentError("AWS4Auth not available. Please install \"requests-aws4auth\"")
+            if self._client is None:
+                awsauth = AWS4Auth(refreshable_credentials=aws_refreshable_credentials, region=self.aws_region, service='es')
+                self._client = Elasticsearch(
+                    hosts=self.hosts,
+                    http_auth=awsauth,
+                    use_ssl=self.use_ssl,
+                    verify_certs=True,
+                    connection_class=RequestsHttpConnection,
+                    serializer=self.serializer
+                )
 
         raise ValueError("Authentication method not supported")
 
